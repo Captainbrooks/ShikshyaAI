@@ -3,6 +3,8 @@ import React, { useState, useRef, useEffect } from "react";
 import HeroSection from "./components/HeroSection.jsx";
 import Layout from "./components/Layout.jsx";
 import { BrowserRouter as Router , Routes, Route } from "react-router-dom";
+import Login from "./components/Login.jsx";
+import Signup from "./components/SIgnup.jsx";
 function App() {
   // const [message, setMessage] = useState("");
   // const [chat, setChat] = useState([]);
@@ -92,6 +94,8 @@ function App() {
   <Routes>
  <Route path="/" element={<Layout />} />
  <Route path="/c/:chatId" element={<Layout />} />
+ <Route path="/login" element={<Login />} />
+ <Route path="/signup" element={<Signup />} />
  </Routes>
 
 </Router>

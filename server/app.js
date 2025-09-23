@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import OpenAI from "openai";
 import dbConnection from "./dbConnection/dbconnection.js";
 import chatRoutes from "./routes/chatRoutes.js"
+import authRoutes from "./routes/authRoutes.js"
 import ChatDb from "./models/Chat.db.js";
 
 
@@ -25,6 +26,7 @@ const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 
 app.use("/api/chat",chatRoutes);
+app.use("/api/user",authRoutes);
 
 
 app.get("/", (req, res) => {
@@ -81,13 +83,6 @@ app.post("/api/chat/", async (req, res) => {
 
           });
         }
-
-
-
-      
-    
-
-
 
     res.json({ answer, chatId:chatId });
   } catch (err) {
