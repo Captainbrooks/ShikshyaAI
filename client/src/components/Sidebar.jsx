@@ -17,23 +17,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Sidebar = ({ activeTab, setActiveTab }) => {
   const [userSetting, setUserSetting] = useState(false);
+  const [titles,setTitles]=useState([])
   const dropdownRef = useRef(null);
   const navigate=useNavigate();
 
-  const userId=Math.floor(Math.random() * 99999 + 1);
 
 
   const handleNewChat=async()=>{
-    try {
-          const res=await axios.post("http://localhost:5000/api/chat/new",{userId:userId});
-    console.log(res)
-    const chatId=res.data._id;
-
-    navigate(`/c/${chatId}`)
-    } catch (error) {
-      console.log(error)
-    }
-
+    navigate("/")
   }
 
   // Close dropdown when clicking outside
@@ -46,6 +37,38 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+
+
+
+  useEffect(()=>{
+    const fetchChats=async()=>{
+
+
+      try {
+          const res=await axios.get(`http://localhost:5000/api/get-chats`,{
+        withCredentials:true
+      });
+
+
+   console.log(res.data.chats)
+
+   const allTitles=res.data.chats.map(chat=>chat.title)
+   setTitles(allTitles)
+
+
+
+
+
+   
+      } catch (error) {
+        console.log("error: ", error)
+      }
+
+    }
+
+    fetchChats();
+  },[])
 
   return (
     <div className="h-full flex flex-col bg-white border-r border-gray-200 w-64 py-6 relative">
@@ -106,12 +129,12 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
 
         {
           activeTab && activeTab === "Chats" &&
-        <div className="space-y-2">
-          {["Math Homework", "Science Questions", "History Quiz Prep"].map(
+        <div className="overflow-auto space-y-2">
+          {titles.map(
             (title, index) => (
               <button
                 key={index}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors duration-150 
+                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors duration-150
                 ${
                   index === 0
                     ? "bg-indigo-50 text-indigo-700"
@@ -124,6 +147,9 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
           )}
         </div>
 }
+
+
+
 
 {
   activeTab && activeTab === "Quizzes" &&

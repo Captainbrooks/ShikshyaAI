@@ -11,7 +11,7 @@ import mongoose from "mongoose"
 
 // for each messages
 const messageSchema=new mongoose.Schema({
-    role:{type:String, enum:["user","bot"], required:true},
+    role:{type:String, enum:["user","assistant"], required:true},
     text:{type:String,required:true},
     time:{type:Date, default:Date.now}
 })
@@ -20,8 +20,7 @@ const messageSchema=new mongoose.Schema({
 // for each Chat
 
 const chatSchema = new mongoose.Schema({
-    userId: { type: Number, required: true },
-    chatId: { type: Number, required: true,unique:true },
+    userId: { type: mongoose.Schema.Types.ObjectId,ref:'User', required: true },
     title: { type: String, default: "New Chat" },
     messages: [messageSchema],
     createdAt: { type: Date, default: Date.now },

@@ -6,41 +6,35 @@ dotenv.config();
 
 
 
-const requireAuth=(req,res,next)=>{
-    const authorization=req.headers.authorization;
+export const requireAuth=(req,res,next)=>{
+    const token=req.cookies.jwt;
 
-    if(!authorization){
-        return res.status(404).json({
-            status:"Failed",
-            message:"Authorization headers not found"
-        })
-    }
 
-    const token= authorization.split(" ")[1];
 
     if(!token){
-        return res.status(401).json({
-            status:"failed",
-            message:"Invalid Token"
+        return res.status(404).json({
+            status:"Failed",
+            message:"Not authenticated"
         })
     }
 
-    jwt.verify(token,process.env.SECRET,(error,decodedToken)=>{
-        if(error){
-            console.log(error);
-            return res.status(401).json({
-                status:"Failed",
-                error:error.message
-            })
-        }
+    try {
 
-        console.log(decodedToken)
+        const decoded=jwt.verify(token, process.env.SECRET);
+
+        req.userId=decoded.id;
         next();
-    })
+        
+    } catch (error) {
+        return res.status(403).json({ error: "Invalid token" });
+    }
+
+   
+
+   
 }
 
 
-export default requireAuth;
 
 
 

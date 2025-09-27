@@ -6,93 +6,26 @@ import { BrowserRouter as Router , Routes, Route } from "react-router-dom";
 import Login from "./components/Login.jsx";
 import Signup from "./components/SIgnup.jsx";
 function App() {
-  // const [message, setMessage] = useState("");
-  // const [chat, setChat] = useState([]);
-  // const [isTyping, setIsTyping] = useState(false);
-  // const chatContainerRef = useRef(null);
 
-  // // Scroll to bottom when chat updates
-  // useEffect(() => {
-  //   if (chatContainerRef.current) {
-  //     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-  //   }
-  // }, [chat]);
 
-  // const handleSend = async () => {
-  //   if (!message.trim()) return;
 
-  //   const timestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  //   const userMsg = { sender: "user", text: message, time: timestamp };
+  
 
-  //   setChat(prev => [...prev, userMsg]);
-
-  //   setMessage("");
-  //   setIsTyping(true);
-
-  //   try {
-  //     // Convert chat to OpenAI messages format
-  //     const messagesForAI = chat
-  //       .map(c => ({ role: c.sender === "user" ? "user" : "assistant", content: c.text }))
-  //       .concat([{ role: "user", content: message }]);
-
-  //     const res = await axios.post("http://localhost:5000/api/chat", { messages: messagesForAI });
-
-  //     const botTimestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  //     setChat(prev => [...prev, { sender: "bot", text: res.data.answer, time: botTimestamp }]);
-  //   } catch (err) {
-  //     console.error(err);
-  //     const botTimestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  //     setChat(prev => [...prev, { sender: "bot", text: "AI error. Try again.", time: botTimestamp }]);
-  //   } finally {
-  //     setIsTyping(false);
-  //   }
-  // };
-
-  // const handleKeyPress = e => {
-  //   if (e.key === "Enter" && !e.shiftKey) {
-  //     e.preventDefault();
-  //     handleSend();
-  //   }
-  // };
-
-  // const renderMessage = msg => {
-  //   // Detect code blocks
-  //   const codeRegex = /```(.*?)\n([\s\S]*?)```/g;
-  //   const parts = [];
-  //   let lastIndex = 0;
-  //   let match;
-
-  //   while ((match = codeRegex.exec(msg)) !== null) {
-  //     if (match.index > lastIndex) {
-  //       parts.push({ type: "text", content: msg.substring(lastIndex, match.index) });
-  //     }
-  //     parts.push({ type: "code", language: match[1] || "javascript", content: match[2] });
-  //     lastIndex = match.index + match[0].length;
-  //   }
-
-  //   if (lastIndex < msg.length) {
-  //     parts.push({ type: "text", content: msg.substring(lastIndex) });
-  //   }
-
-  //   return parts.map((p, idx) =>
-  //     p.type === "text" ? (
-  //       <span key={idx}>{p.content}</span>
-  //     ) : (
-  //       <SyntaxHighlighter key={idx} language={p.language} style={materialLight}>
-  //         {p.content}
-  //       </SyntaxHighlighter>
-  //     )
-  //   );
-  // };
 
   return (
+
+
+
 
     <>
 
 
+  
+
+
 <Router>
   <Routes>
- <Route path="/" element={<Layout />} />
+ <Route path="/" element={<HeroSection />} />
  <Route path="/c/:chatId" element={<Layout />} />
  <Route path="/login" element={<Login />} />
  <Route path="/signup" element={<Signup />} />

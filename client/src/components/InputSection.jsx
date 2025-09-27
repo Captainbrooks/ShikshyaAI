@@ -3,6 +3,7 @@ import { SendIcon, Plus, FileText, Code,Globe  } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
 import axios from "axios"
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const InputSection=({setIsTyping,chat,setChat})=> {
@@ -10,6 +11,8 @@ const InputSection=({setIsTyping,chat,setChat})=> {
   const [menuOpen, setMenuOpen] = useState(false);
   const textareaRef = useRef(null);  
   const {chatId}=useParams();
+  console.log("chatId at", chatId)
+  const Navigate=useNavigate();
 
 
 
@@ -32,7 +35,6 @@ const InputSection=({setIsTyping,chat,setChat})=> {
     setIsTyping(true);
 
    
-    const userId= Math.floor(Math.random() * 6595 + 1);
 
 
 
@@ -42,11 +44,23 @@ const InputSection=({setIsTyping,chat,setChat})=> {
 
       const messagesForAI=chat.map((c)=>({role:c.sender === "user" ? "user":"assistant", content:c.text})).concat([{role:"user",content:message}]);
 
-      const res=await axios.post("http://localhost:5000/api/chat",{messages:messagesForAI,chatId:chatId, userId:userId});
+      const res=await axios.post("http://localhost:5000/api/chat",{messages:messagesForAI,chatId:chatId,
+        
+      },
+      {withCredentials: true}
+      
+      
+
+
+      );
+
+      Navigate(`/c/${res.data.chatId}`)
+
+      
 
       console.log(res.data.answer)
         const botTimestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-        setChat(prev=>[...prev, {sender:"bot",text:res.data.answer, time:botTimestamp }])
+        setChat(prev=>[...prev, {sender:"assistant",text:res.data.answer, time:botTimestamp }])
 
 
       
@@ -55,7 +69,7 @@ const InputSection=({setIsTyping,chat,setChat})=> {
     console.log(error)
 
      const botTimestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-     setChat(prev=> [...prev, {sender:"bot",text:"AI Error. Try again", time:botTimestamp}])
+     setChat(prev=> [...prev, {sender:"assistant",text:"AI Error. Try again", time:botTimestamp}])
       
     }finally{
       setIsTyping(false)

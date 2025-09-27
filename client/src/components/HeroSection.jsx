@@ -215,7 +215,7 @@ const HeroSection = () => {
             className="max-w-2xl mx-auto text-xl text-indigo-100 mb-8"
           >
             The next generation learning platform powered by artificial
-            intelligence for Nepali students.
+            intelligence for students.
           </motion.p>
           <motion.div
             initial={{

@@ -21,7 +21,7 @@ export const Signup=async(req,res)=>{
         const token= generateToken(user._id)
         console.log(token);
 
-        res.cookie('jwt', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+        res.cookie('jwt', token, { httpOnly: true, sameSite: "None", maxAge: 24 * 60 * 60 * 1000 });
 
         res.status(201).json({
             status:"success",
@@ -58,7 +58,7 @@ export const Login=async(req,res)=>{
         }
 
         const token=generateToken(user._id);
-        res.cookie('jwt', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+        res.cookie('jwt', token, { httpOnly: true,sameSite: "None", maxAge: 24 * 60 * 60 * 1000 });
         
         res.status(200).json({
             status:"Success",
