@@ -4,7 +4,6 @@ import generateToken from "../authentication/token.js"
 export const Signup=async(req,res)=>{
     const {fullName,email,password}=req.body;
 
-    console.log(fullName,email,password)
 
 
     try {
@@ -19,7 +18,6 @@ export const Signup=async(req,res)=>{
         }
 
         const token= generateToken(user._id)
-        console.log(token);
 
         res.cookie('jwt', token, { httpOnly: true, sameSite: "None", maxAge: 24 * 60 * 60 * 1000 });
 
@@ -45,8 +43,6 @@ export const Signup=async(req,res)=>{
 
 export const Login=async(req,res)=>{
     const {email,password}=req.body;
-    console.log("email ", email)
-    console.log("password ", password)
 
     try {
         const user=await User.login(email,password);
@@ -58,7 +54,7 @@ export const Login=async(req,res)=>{
         }
 
         const token=generateToken(user._id);
-        res.cookie('jwt', token, { httpOnly: true,sameSite: "None", maxAge: 24 * 60 * 60 * 1000 });
+        res.cookie('jwt', token, { httpOnly: true,sameSite: "Lax", secure:false, maxAge: 24 * 60 * 60 * 1000 });
         
         res.status(200).json({
             status:"Success",

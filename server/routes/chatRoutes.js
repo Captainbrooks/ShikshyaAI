@@ -15,9 +15,7 @@ router.post("/chat", requireAuth ,async (req, res) => {
     const { chatId, messages } = req.body;
     const userId=req.userId;
 
-    console.log("chatId", chatId)
 
-    console.log("userId", userId)
 
     if (!userId || !messages) {
         return res.status(400).json({
@@ -90,11 +88,12 @@ router.post("/chat", requireAuth ,async (req, res) => {
             });
 
             const chatTitle=titleResponse.choices[0].message.content.trim();
+            const doubleQuotesRemoved=chatTitle.replace(/"/g, '');
+            
 
-            chat.title=chatTitle;
+            chat.title=doubleQuotesRemoved
             await chat.save();
         }
-
 
         return res.json({
             chatId: chat._id,
@@ -117,7 +116,6 @@ router.post("/chat", requireAuth ,async (req, res) => {
 // start a new chat
 
 router.post("/chat/new" ,requireAuth ,async (req, res) => {
-    console.log("new route is activated")
     try {
         const  userId  = req.userId;
         console.log("user id ", userId)
@@ -184,6 +182,33 @@ router.get("/get-chats",requireAuth, async (req, res) => {
         })
     } catch (error) {
         res.status(500).json({ error: error.message })
+    }
+})
+
+
+
+router.get("/get-chats/:id",requireAuth, async (req, res) => {
+    try {
+
+        const userId  = req.userId;
+        const {id}=req.params;
+        const conversation= await Chat.findById(id);
+
+        if(!conversation){
+            return res.status(404).json({
+                error:"Chat not found"
+            })
+        }
+        if(conversation.userId.toString()!==userId){
+            return res.status(403).json({
+                error:"You are not authorized to access this chat"
+            })
+        }
+        res.json({
+            conversation
+        })
+    } catch (error) {
+        console.log("error: ", error)
     }
 })
 

@@ -9,6 +9,8 @@ import {
   LogOut,
 } from "lucide-react";
 import axios from "axios"
+import clsx from "clsx";
+import {useParams } from "react-router-dom";
 
 import { Link, useNavigate } from "react-router-dom";
 
@@ -20,7 +22,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
   const [titles,setTitles]=useState([])
   const dropdownRef = useRef(null);
   const navigate=useNavigate();
-
+ const {chatId}=useParams();
 
 
   const handleNewChat=async()=>{
@@ -51,10 +53,13 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
       });
 
 
-   console.log(res.data.chats)
 
-   const allTitles=res.data.chats.map(chat=>chat.title)
-   setTitles(allTitles)
+   const allChats=res.data.chats.map(chat=>({
+    _id:chat._id,
+    title:chat.title
+   }));
+
+   setTitles(allChats)
 
 
 
@@ -69,6 +74,10 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
 
     fetchChats();
   },[])
+
+
+
+
 
   return (
     <div className="h-full flex flex-col bg-white border-r border-gray-200 w-64 py-6 relative">
@@ -127,27 +136,22 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
         </h2>
 
 
-        {
-          activeTab && activeTab === "Chats" &&
-        <div className="overflow-auto space-y-2">
-          {titles.map(
-            (title, index) => (
-              <button
-                key={index}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors duration-150
-                ${
-                  index === 0
-                    ? "bg-indigo-50 text-indigo-700"
-                    : "text-gray-600 hover:bg-gray-50"
-                }`}
-              >
-                {title}
-              </button>
-            )
-          )}
-        </div>
-}
-
+     {activeTab === "Chats" && (
+  <div className="overflow-auto space-y-2">
+    {titles.map((chat) => (
+      <Link
+        key={chat._id}
+        to={`/c/${chat._id}`}
+        className={clsx(
+          "block w-full text-left px-3 py-2 rounded-lg text-sm transition-colors duration-150",
+          chat._id === chatId ? "bg-indigo-50 text-indigo-700" : "text-gray-600 hover:bg-gray-50"
+        )}
+      >
+        {chat.title}
+      </Link>
+    ))}
+  </div>
+)}
 
 
 

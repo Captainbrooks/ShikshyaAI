@@ -25,7 +25,7 @@ function App() {
 
 <Router>
   <Routes>
- <Route path="/" element={<HeroSection />} />
+ <Route path="/" element={<Layout />} />
  <Route path="/c/:chatId" element={<Layout />} />
  <Route path="/login" element={<Login />} />
  <Route path="/signup" element={<Signup />} />

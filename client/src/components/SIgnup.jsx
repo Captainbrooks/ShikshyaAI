@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BookOpenIcon, EyeIcon, EyeOffIcon } from 'lucide-react'
 import axios from "axios"
+
+
 const Signup = () => {
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
