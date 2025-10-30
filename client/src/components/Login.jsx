@@ -20,6 +20,7 @@ const Login = () => {
     }
 
     const body={email,password};
+    console.log(body)
 
     try {
 

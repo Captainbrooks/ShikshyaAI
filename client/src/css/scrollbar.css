@@ -1,0 +1,21 @@
+/* Custom scrollbar for webkit browsers (Chrome, Edge, Safari) */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 2px; /* width of the scrollbar */
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #da1a1a; /* track color */
+  border-radius: 9999px; /* round edges */
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #dadade; /* Tailwind Indigo-500 */
+  border-radius: 9999px;
+  border: 2px solid #e9e6e6; /* adds some spacing around thumb */
+}
+
+/* Firefox */
+.scrollbar-custom {
+  scrollbar-width: thin;
+  scrollbar-color: #dedede #ffffff;
+}

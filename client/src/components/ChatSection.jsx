@@ -115,24 +115,7 @@ function ChatSection() {
         )
       }
 
-      {
-        messages.length === 0 && (
-          <div className="bg-white p-4 border-b border-gray-100">
-            <h2 className="text-lg font-medium text-gray-800 text-center">
-              Welcome to ShikshyaAI, your friendly learning assistant
-            </h2>
-          </div>
-
-
-        )
-
-
-      }
-
-
-
-
-      <div className='flex-1 overflow-y-auto p-4 space-y-4'>
+      <div className='flex-1 overflow-y-auto p-4'>
 
 
         {
@@ -148,18 +131,7 @@ function ChatSection() {
 
 
 
-        {
-          messages.length === 0 &&
 
-          (
-
-            <div className='flex flex-col items-center justify-center h-full text-center text-gray-400'>
-              <BookOpenIcon className='text-blue-300 size-20' />
-              <p className="text-lg">Start a conversation</p>
-              <p className="text-sm">Ask any question about your studies</p>
-            </div>
-          )
-        }
 
         {location.pathname !== "/" && messages.map((m, idx) => (
           <div key={idx} className={`flex ${m.sender === "user" ? "justify-end" : "justify-start"}`}>

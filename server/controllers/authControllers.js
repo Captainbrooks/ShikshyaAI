@@ -43,6 +43,8 @@ export const Signup=async(req,res)=>{
 
 export const Login=async(req,res)=>{
     const {email,password}=req.body;
+    console.log("login request received")
+    console.log(email,password)
 
     try {
         const user=await User.login(email,password);

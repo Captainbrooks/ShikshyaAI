@@ -1,38 +1,48 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { SendIcon, Plus, FileText, Code,Globe  } from 'lucide-react';
+import { SendIcon, Plus, FileText, Code, Globe } from 'lucide-react';
 
 import axios from "axios"
-import { useParams , useNavigate  } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 
-const InputSection=({setIsTyping,messages,setMessages})=> {
+const InputSection = ({ setIsTyping, messages, setMessages }) => {
   const [message, setMessage] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
-  const textareaRef = useRef(null);  
-  const {chatId}=useParams();
-  const Navigate=useNavigate();
+  const textareaRef = useRef(null);
+  const { chatId } = useParams();
+  const Navigate = useNavigate();
+
+
+
+  // Clear messages when chatId changes to null
+  useEffect(() => {
+    if (!chatId) {
+      setMessages([])
+    }
+
+  }, [chatId])
 
 
 
 
 
 
-  
 
 
-  const handleSend=async()=>{
-    if(!message.trim()) return
 
-    const timestamp=new Date().toLocaleTimeString([],{ hour: "2-digit", minute: "2-digit" });
-    const userMsg={sender:"user", text:message, time:timestamp};
+  const handleSend = async () => {
+    if (!message.trim()) return
+
+    const timestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const userMsg = { sender: "user", text: message, time: timestamp };
 
 
-    setMessages(prev=> [...prev, userMsg])
+    setMessages(prev => [...prev, userMsg])
 
     setMessage("");
     setIsTyping(true);
 
-   
+
 
 
 
@@ -45,32 +55,32 @@ const InputSection=({setIsTyping,messages,setMessages})=> {
         content: c.text
       })).concat([{ role: "user", content: message }]);
 
-      const res=await axios.post("http://localhost:5000/api/chat",
-        {messages:messagesForAI,chatId:chatId},
-        {withCredentials: true}
+      const res = await axios.post("http://localhost:5000/api/chat",
+        { messages: messagesForAI, chatId: chatId },
+        { withCredentials: true }
       );
 
       Navigate(`/c/${res.data.chatId}`)
 
-      
+
 
       const botTimestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-      setMessages(prev=>[...prev, {sender:"assistant",text:res.data.answer, time:botTimestamp }])
+      setMessages(prev => [...prev, { sender: "assistant", text: res.data.answer, time: botTimestamp }])
 
     } catch (error) {
 
-    console.log(error)
+      console.log(error)
 
-     const botTimestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-     setMessages(prev=> [...prev, {sender:"assistant",text:"AI Error. Try again", time:botTimestamp}])
-      
-    }finally{
+      const botTimestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      setMessages(prev => [...prev, { sender: "assistant", text: "AI Error. Try again", time: botTimestamp }])
+
+    } finally {
       setIsTyping(false)
     }
   };
 
 
-    const handleKeyPress = e => {
+  const handleKeyPress = e => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
@@ -147,7 +157,7 @@ const InputSection=({setIsTyping,messages,setMessages})=> {
               className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100"
               onClick={() => handleMenuSelect('web search')}
             >
-            <Globe className='w-4 h-4'/> Web Search
+              <Globe className='w-4 h-4' /> Web Search
             </button>
           </div>
         )}
@@ -166,13 +176,12 @@ const InputSection=({setIsTyping,messages,setMessages})=> {
 
       {/* Send button */}
       <button
-      onClick={handleSend}
+        onClick={handleSend}
         disabled={!message.trim()}
-        className={`ml-2 p-2 rounded-full transition-colors duration-200 ${
-          message.trim()
+        className={`ml-2 p-2 rounded-full transition-colors duration-200 ${message.trim()
             ? 'bg-blue-600 text-white hover:bg-indigo-700'
             : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-        }`}
+          }`}
       >
         <SendIcon className='h-5 w-5' />
       </button>
